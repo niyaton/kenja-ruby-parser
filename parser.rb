@@ -2,6 +2,7 @@ require 'parser/current'
 require 'unparser'
 
 METHOD_ROOT_NAME = "[MT]"
+CLASS_ROOT_NAME = "[CN]"
 BODY_BLOB_NAME = "body"
 
 class GitObject
@@ -38,39 +39,47 @@ class RubyTreeCreator
 	def create_tree
 		root = Parser::CurrentRuby.parse(@src)
 		class_defs = []
+		class_contents = []
+		function_contents = []
+		others = []
 		for child in root.children
 			if child.type == :class
-				puts "class!"
-				class_defs << child
+				class_contents << create_class_tree(child)
 			elsif child.type == :def
-				puts "function!"
+				function_contents << create_func_tree(child)
 			else
-				puts "others!"
+				others << child
 			end
 		end
-		
-		lines = []
-		for class_def in class_defs
-			lines << create_class_tree(class_def)
+
+		tree = []
+		if class_contents	
+			tree << GitObject.new(:tree, CLASS_ROOT_NAME, class_contents)
 		end
-		lines.join("\n")
+		
+		if function_contents
+			tree << GitObject.new(:tree, METHOD_ROOT_NAME, function_contents)
+		end
+
+		if others
+			statements = others.map { |item| Unparser.unparse(item) }
+			src = statements.join("\n")
+			tree << GitObject.new(:blob, "others", src)
+		end
+		tree
 	end
 
 	def create_func_tree node
-		puts "----start function----"
 		name = node.children[0].to_s
-		#p node.children[1]
 		body = Unparser.unparse(node.children[2])
 		contents = []
 		contents << GitObject.new(:blob, BODY_BLOB_NAME, body)
-		puts "----end   funciton----"
 		GitObject.new(:tree, name, contents)
 	end
 
 	def create_class_tree node
 		func_defs = []
-	
-		puts "----start class ----"
+		name = node.children[0].children[1].to_s	
 		for child in node.children[2..-1]
 			if child.type == :def
 				func_defs << child
@@ -80,8 +89,9 @@ class RubyTreeCreator
 		for func_def in func_defs
 			function_contents << create_func_tree(func_def)
 		end
-		puts "----end  class ----"
-		GitObject.new(:tree, METHOD_ROOT_NAME, function_contents) 
+		class_contents = []
+		class_contents << GitObject.new(:tree, METHOD_ROOT_NAME, function_contents)
+		GitObject.new(:tree, name, class_contents)
 	end
 end
 
