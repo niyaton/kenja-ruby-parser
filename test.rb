@@ -22,6 +22,17 @@ def hello
 	p "Hello!"
 end
 
+class Greetings < Hello
+	@@test = 1
+	def call
+		p "Hello!"
+	end
+
+	def call2
+		p "Good morning!"
+	end
+end
+
 for i in 1..10
 	hello
 end
