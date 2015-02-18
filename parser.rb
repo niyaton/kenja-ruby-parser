@@ -18,7 +18,7 @@ class GitObject
     case @type
     when :tree then
       lines << "[TS] #{@name}"
-      for content in @contents
+      @contents.each do |content|
         lines << content.to_s
       end
       lines << '[TE]'
@@ -44,7 +44,7 @@ class RubyTreeCreator
     function_contents = []
     others = []
 
-    for child in root.children
+    root.children.each do |child|
       if child.type == :class
         class_contents << create_class_tree(child)
       elsif child.type == :def
@@ -89,14 +89,14 @@ class RubyTreeCreator
       definitions = [node.children[2]]
     end
 
-    for child in definitions
+    definitions.each do |child|
       if child.type == :def
         func_defs << child
       end
     end
 
     function_contents = []
-    for func_def in func_defs
+    func_defs.each do |func_def|
       function_contents << create_func_tree(func_def)
     end
     class_contents = []
