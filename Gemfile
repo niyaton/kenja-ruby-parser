@@ -1,5 +1,4 @@
-# A sample Gemfile
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "parser"
-gem "unparser"
+# Specify your gem's dependencies in kenja-ruby-parser.gemspec
+gemspec

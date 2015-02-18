@@ -1,3 +1,10 @@
+PATH
+  remote: .
+  specs:
+    kenja-ruby-parser (0.1.0)
+      parser
+      unparser
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -17,6 +24,7 @@ GEM
     parser (2.2.0.3)
       ast (>= 1.1, < 3.0)
     procto (0.0.2)
+    rake (10.4.2)
     thread_safe (0.3.4)
     unparser (0.2.2)
       abstract_type (~> 0.0.7)
@@ -31,5 +39,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  parser
-  unparser
+  bundler (~> 1.8)
+  kenja-ruby-parser!
+  rake (~> 10.0)
