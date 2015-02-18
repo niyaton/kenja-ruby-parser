@@ -71,7 +71,6 @@ class RubyTreeCreator
   end
 
   def create_func_tree(node)
-
     name = node.children[0].to_s
     body = Unparser.unparse(node.children[2])
     contents = []
