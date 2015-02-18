@@ -4,6 +4,7 @@ require 'unparser'
 METHOD_ROOT_NAME = "[MT]"
 CLASS_ROOT_NAME = "[CN]"
 BODY_BLOB_NAME = "body"
+TOPLEVEL_BLOB_NAME = "top_level_statements"
 
 class GitObject
 	def initialize(type, name, contents)
@@ -64,7 +65,7 @@ class RubyTreeCreator
 		if others
 			statements = others.map { |item| Unparser.unparse(item) }
 			src = statements.join("\n")
-			tree << GitObject.new(:blob, "others", src)
+			tree << GitObject.new(:blob, TOPLEVEL_BLOB_NAME, src)
 		end
 		tree
 	end
