@@ -103,5 +103,5 @@ class RubyTreeCreator
 	end
 end
 
-lines = open("test.rb").read
+lines = $stdin.readlines.join("\n")
 puts RubyTreeCreator.new(lines).create_tree
