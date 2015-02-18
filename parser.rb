@@ -80,11 +80,18 @@ class RubyTreeCreator
 	def create_class_tree node
 		func_defs = []
 		name = node.children[0].children[1].to_s	
-		for child in node.children[2..-1]
+		if node.children[2].type == :begin
+			definitions = node.children[2].children
+		else
+			definitions = [node.children[2]]
+		end
+
+		for child in definitions
 			if child.type == :def
 				func_defs << child
 			end
 		end
+
 		function_contents = []
 		for func_def in func_defs
 			function_contents << create_func_tree(func_def)
