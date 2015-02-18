@@ -89,9 +89,7 @@ class RubyTreeCreator
     end
 
     definitions.each do |child|
-      if child.type == :def
-        func_defs << child
-      end
+      child.type == :def && func_defs << child
     end
 
     function_contents = []
