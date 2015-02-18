@@ -39,7 +39,6 @@ class RubyTreeCreator
 
   def create_tree
     root = Parser::CurrentRuby.parse(@src)
-    class_defs = []
     class_contents = []
     function_contents = []
     others = []
