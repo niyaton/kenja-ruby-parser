@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Kenja::Ruby::Parser do
+describe KenjaRubyParser do
   it 'has a version number' do
-    expect(Kenja::Ruby::Parser::VERSION).not_to be nil
+    expect(KenjaRubyParser::VERSION).not_to be nil
   end
 
   it 'does something useful' do

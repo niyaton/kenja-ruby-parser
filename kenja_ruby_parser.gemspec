@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'kenja/ruby/parser/version'
+require 'kenja_ruby_parser/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "kenja-ruby-parser"
-  spec.version       = Kenja::Ruby::Parser::VERSION
+  spec.name          = "kenja_ruby_parser"
+  spec.version       = KenjaRubyParser::VERSION
   spec.authors       = ["Kenji Fujiwara"]
   spec.email         = ["kenji-f@is.naist.jp"]
 
