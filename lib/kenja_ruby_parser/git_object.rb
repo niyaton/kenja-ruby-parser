@@ -14,7 +14,7 @@ module KenjaRubyParser
         @contents.each do |content|
           lines << content.to_s
         end
-        lines << '[TE]'
+        lines << "[TE] #{@name}"
       when :blob then
         lines << "[BN] #{@name}"
         nlines = @contents.count("\n") + 1
