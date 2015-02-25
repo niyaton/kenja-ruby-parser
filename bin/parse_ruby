@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
+require 'kenja_ruby_parser'
 
-puts "Test"
+lines = $stdin.readlines.join("\n")
+puts RubyTreeCreator.new(lines).create_tree
