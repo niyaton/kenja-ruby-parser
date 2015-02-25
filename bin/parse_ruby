@@ -2,4 +2,7 @@
 require 'kenja_ruby_parser'
 
 lines = $stdin.readlines.join("\n")
-puts KenjaRubyParser::RubyTreeCreator.new(lines).create_tree
+tree = KenjaRubyParser::RubyTreeCreator.new(lines).create_tree
+File.open(ARGV[0], 'w') do |f|
+  f.puts(tree)
+end
