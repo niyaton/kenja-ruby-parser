@@ -1,3 +1,6 @@
+require 'parser/current'
+require 'unparser'
+
 module KenjaRubyParser
   class RubyTreeCreator
     def initialize(src)
