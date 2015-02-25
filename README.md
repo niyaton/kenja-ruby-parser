@@ -20,7 +20,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```sh
+cat foobar.rb | parse_ruby
+```
 
 ## Development
 
