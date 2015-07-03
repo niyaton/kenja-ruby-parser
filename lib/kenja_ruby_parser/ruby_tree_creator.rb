@@ -56,34 +56,15 @@ module KenjaRubyParser
       GitObject.new(:tree, name, contents)
     end
 
-    def create_class_tree(node)
-      func_defs = []
+    def create_class_module_tree(node, definition_start_index)
       name = node.children[0].children[1].to_s
-      if node.children[2].type == :begin
-        definitions = node.children[2].children
+      puts name
+      if node.children[definition_start_index] == nil
+        definitions = []
+      elsif node.children[definition_start_index].type == :begin
+        definitions = node.children[definition_start_index].children
       else
-        definitions = [node.children[2]]
-      end
-
-      definitions.each do |child|
-        child.type == :def && func_defs << child
-      end
-
-      function_contents = []
-      func_defs.each do |func_def|
-        function_contents << create_func_tree(func_def)
-      end
-      class_contents = []
-      class_contents << GitObject.new(:tree, METHOD_ROOT_NAME, function_contents)
-      GitObject.new(:tree, name, class_contents)
-    end
-
-    def create_module_tree(node)
-      name = node.children[0].children[1].to_s
-      if node.children[1].type == :begin
-        definitions = node.children[1].children
-      else
-        definitions = [node.children[1]]
+        definitions = [node.children[definition_start_index]]
       end
 
       function_contents = []
@@ -100,6 +81,14 @@ module KenjaRubyParser
       contents << GitObject.new(:tree, CLASS_ROOT_NAME, class_contents)
       contents << GitObject.new(:tree, MODULE_ROOT_NAME, module_contents)
       GitObject.new(:tree, name, contents)
+    end
+
+    def create_class_tree(node)
+      create_class_module_tree(node, 2)
+    end
+
+    def create_module_tree(node)
+      create_class_module_tree(node, 1)
     end
   end
 end
