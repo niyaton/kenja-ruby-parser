@@ -10,12 +10,16 @@ module KenjaRubyParser
     def create_tree
       root = Parser::CurrentRuby.parse(@src)
       class_contents = []
+      module_contents = []
       function_contents = []
       others = []
 
       root.children.each do |child|
         if child.type == :class
           class_contents << create_class_tree(child)
+        elsif child.type == :module
+          puts child.to_s
+          module_contents << create_module_tree(child)
         elsif child.type == :def
           function_contents << create_func_tree(child)
         else
@@ -26,6 +30,10 @@ module KenjaRubyParser
       tree = []
       if class_contents
         tree << GitObject.new(:tree, CLASS_ROOT_NAME, class_contents)
+      end
+
+      if module_contents
+        tree << GitObject.new(:tree, MODULE_ROOT_NAME, module_contents)
       end
 
       if function_contents
@@ -68,6 +76,30 @@ module KenjaRubyParser
       class_contents = []
       class_contents << GitObject.new(:tree, METHOD_ROOT_NAME, function_contents)
       GitObject.new(:tree, name, class_contents)
+    end
+
+    def create_module_tree(node)
+      name = node.children[0].children[1].to_s
+      if node.children[1].type == :begin
+        definitions = node.children[1].children
+      else
+        definitions = [node.children[1]]
+      end
+
+      function_contents = []
+      class_contents = []
+      module_contents = []
+      definitions.each do |child|
+        child.type == :def && function_contents << create_func_tree(child)
+        child.type == :class && class_contents << create_class_tree(child)
+        child.type == :module && module_contents << create_module_tree(child)
+      end
+
+      contents = []
+      contents << GitObject.new(:tree, METHOD_ROOT_NAME, function_contents)
+      contents << GitObject.new(:tree, CLASS_ROOT_NAME, class_contents)
+      contents << GitObject.new(:tree, MODULE_ROOT_NAME, module_contents)
+      GitObject.new(:tree, name, contents)
     end
   end
 end
