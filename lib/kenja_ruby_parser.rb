@@ -5,6 +5,7 @@ require "kenja_ruby_parser/ruby_tree_creator"
 module KenjaRubyParser
   METHOD_ROOT_NAME = '[MT]'
   CLASS_ROOT_NAME = '[CN]'
+  MODULE_ROOT_NAME = '[MO]'
   BODY_BLOB_NAME = 'body'
   TOPLEVEL_BLOB_NAME = 'top_level_statements'
 end
